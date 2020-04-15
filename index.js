@@ -106,12 +106,9 @@ class ZT {
    * @param {*} val
    * @returns {boolean}
    */
-  static isFn(val) {
+  static isFunction(val) {
     return typeof val === 'function';
   }
-
-  static isFunction = ZT.isFn;
-
 
   /**
    * @param {*} val
