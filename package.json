@@ -1,0 +1,19 @@
+{
+  "name": "zletools",
+  "version": "1.0.0",
+  "description": "stuff i use",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zlebruh/zletools.git"
+  },
+  "author": "zlebruh <code@battlebroyale.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zlebruh/zletools/issues"
+  },
+  "homepage": "https://github.com/zlebruh/zletools#readme"
+}
