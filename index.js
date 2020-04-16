@@ -493,6 +493,49 @@ class ZT {
     }
     return string.replace(reg, (match) => (map[match]));
   }
+
+  /**
+   * @param {*} state - any non-null, non-undefined value would do
+   * @returns {{get: (function(): *), set: set, enumerable: boolean}}
+   */
+  static addProp(state) {
+    const type = ZT.getType(state);
+
+    if (!ZT.is(state)) { throw new Error(`### Cannot use type ${type} as initial state. It does not work this way`); }
+
+    const action = ZT['is' + type];
+    return {
+      get: () => state,
+      set: (val) => {
+        if (action(val)) {
+          if (state !== val) { state = val; }
+        } else {
+          console.error(`### Cannot change property type ${type} with ${ZT.getType(val)}`);
+        }
+      },
+      enumerable: true
+    };
+  };
+
+  /**
+   * @param {object} values   - a collection of properties to be used as initial state for each key/value pair
+   * @param {object} [target] - optional, one will be spawned if not provided
+   * @returns {*}
+   */
+  static addProps(values, target) {
+    if (!ZT.isObject(values)) { ZT.throwNotObject(values, 'values'); }
+    if (!ZT.isObject(target)) { target = {}; }
+
+    const keys = Object.keys(values);
+    var result = {};
+    for (let i = 0; i < keys.length; i += 1) {
+      const key = keys[i];
+      const item = values[key];
+      result[key] = ZT.addProp(item);
+    }
+
+    return Object.defineProperties(target, result);
+  };
 }
 
 module.exports = ZT;

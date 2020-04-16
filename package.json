@@ -1,6 +1,6 @@
 {
   "name": "zletools",
-  "version": "1.0.0a",
+  "version": "1.0.0b",
   "description": "stuff i use",
   "main": "index.js",
   "scripts": {
