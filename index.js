@@ -152,7 +152,7 @@ class ZT {
    * @param {Boolean} [checkEmpty] - optional
    * @returns {boolean}
    */
-  static isString(str = '', checkEmpty) {
+  static isString(str, checkEmpty = false) {
     const isString = typeof str === 'string';
     return !checkEmpty ? isString : isString && !!str.length;
   }
