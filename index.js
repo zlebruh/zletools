@@ -353,9 +353,11 @@ class ZT {
       const itemA = a[type];
       const itemB = b[type];
 
-      return (!itemA || !itemB)
-        ? 0
-        : itemA - itemB;
+      if (!itemA || !itemB || itemA === itemB) {
+        return 0;
+      }
+
+      return itemA > itemB ? 1 : -1;
     });
   }
 
