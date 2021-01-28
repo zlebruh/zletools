@@ -339,12 +339,8 @@ class ZT {
   static sortArrayBy(type, list) {
     // Mandatory sanity checks
     ZT.checkForNumberOfArguments(2, [type, list]);
-    if (!ZT.isString(type, true)) {
-      ZT.throwNotString(type);
-    }
-    if (!ZT.isArray(list, true)) {
-      ZT.throwNotArray(list);
-    }
+    if (!ZT.isString(type, true)) ZT.throwNotString(type);
+    if (!ZT.isArray(list, true)) ZT.throwNotArray(list);
 
     // Sorting seems to be a bit more complex than it should.
     // But there's a reason. We don't want to mess with the order...
@@ -353,7 +349,7 @@ class ZT {
       const itemA = a[type];
       const itemB = b[type];
 
-      if (!itemA || !itemB || itemA === itemB) {
+      if (!ZT.is(itemA) || !ZT.is(itemB) || itemA === itemB) {
         return 0;
       }
 
@@ -445,19 +441,22 @@ class ZT {
     return formatted;
   }
 
-  static reachHelper(ob, arr) {
-    return arr.reduce((prev, key) => (prev[key] || null), ob);
-  }
-
   static reachValue(ob, path = '') {
-    const result = { key: null, value: null, parent: null };
-    const split = path.split('.');
-    const match = ZT.reachHelper(ob, split);
+    if (!ZT.isObject(ob, true)) { ZT.throwNotObject(ob, 'ob'); }
+    if (!ZT.isString(path, true)) { ZT.throwNotString(path, 'path'); }
 
-    if (match) {
-      result.key = split.pop();
-      result.value = match;
-      result.parent = ZT.reachHelper(ob, split);
+    const steps = path.split('.');
+    const result = { key: null, value: null, parent: null };
+
+    for (let i = 0; i < steps.length; i += 1) {
+      const key = steps[i];
+      const parent = result.value || ob;
+      const item = parent[key];
+      const value = ZT.is(item) ? item : null;
+
+      Object.assign(result, { key, parent, value });
+
+      if (!ZT.is(value)) break;
     }
 
     return result;
